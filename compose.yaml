@@ -1,0 +1,38 @@
+services:
+  app:
+    build: .
+    restart: always
+    environment: 
+      DB_PROVIDER: MySQL
+      MYSQL_HOST: db
+      MYSQL_USER: root
+      MYSQL_PASSWORD: secret
+      MYSQL_DB: shoppingList
+    ports:
+    - 8888:80
+
+  db:
+    image: mysql:5.7
+    restart: always
+    volumes:
+      - shoppingList-mysql-db:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_DATABASE: shoppingList
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+
+  phpmyadmin:
+    image: phpmyadmin
+    restart: always
+    ports:
+      - 8081:80
+    environment:
+      - PMA_ARBITRARY=1
+
+volumes:
+  shoppingList-mysql-db:
